@@ -1,12 +1,26 @@
 #include "network.h"
 
-void Network::resize (const size_t&) {}
+void Network::resize (const size_t& count) { /*See how to manage default value for initializing new values*/
+	if (count>values.size()) {
+		for (size_t i(0); i<count; ++i) {
+			values.push_back(0.);
+			}
+		}
+	if (count<values.size()) {
+		for (size_t i(count); i<values.size(); ++i) {
+			values.pop_back();
+			}
+		}
+	}
 
 bool Network::add_link (const size_t&, const size_t&) {}
 
 size_t Network::random_connect(const double&) {}
 
-size_t Network::set_values(const std::vector<double>&) {}
+size_t Network::set_values(const std::vector<double>& _vector) {
+	values=_vector;
+	return values.size();
+	}
 
 size_t Network::size() const { return values.size();}
 

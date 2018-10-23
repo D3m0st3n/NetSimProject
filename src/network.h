@@ -29,7 +29,7 @@ public:
   @param[in] vector of new node values
   @param[out] number of nodes succesfully reset
  */
-    size_t set_values(const std::vector<double>&);
+    size_t set_values(const std::vector<double>&);/*DONE*/
 /*! Number of nodes */
     size_t size() const; /*DONE*/
 /*! Degree (number of links) of node no *n* */
