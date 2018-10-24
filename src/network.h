@@ -13,7 +13,7 @@ public:
     Network() {}
 
 /*! Resizes the list of nodes (\ref values) */
-    void resize(const size_t&);
+    void resize(const size_t&); /*Exception to manage*/
 /*! Adds a bidirectional link between two nodes
   @param[in] a,b the indexes if the two nodes 
   @param[out] success the link was succesfully inserted
