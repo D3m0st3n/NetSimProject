@@ -13,7 +13,17 @@ void Network::resize (const size_t& count) { /*See how to manage default value f
 		}
 	}
 
-bool Network::add_link (const size_t&, const size_t&) {}
+bool Network::add_link (const size_t& _i, const size_t& _j) {
+	if (not(values.empty())) {
+		if (_i<values.size() and _j<values.size()) {
+			links.insert({_i,_j});
+			links.insert({_j,_i});
+			return true;
+			}
+		else return false;
+		}
+	else return false;
+	}
 
 size_t Network::random_connect(const double&) {}
 
