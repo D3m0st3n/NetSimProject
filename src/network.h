@@ -13,12 +13,12 @@ public:
     Network() {}
 
 /*! Resizes the list of nodes (\ref values) */
-    void resize(const size_t&); /*DONE*/
+    void resize(const size_t&); /*Exception to manage*/
 /*! Adds a bidirectional link between two nodes
   @param[in] a,b the indexes if the two nodes 
   @param[out] success the link was succesfully inserted
  */
-    bool add_link(const size_t&, const size_t&); /*Exception to manage*/
+    bool add_link(const size_t&, const size_t&); /*DONE*/
 /*! Creates random connections between nodes: each node *n* will be linked with *degree(n)* other nodes (randomly chosen) where *degree(n)* is Poisson-distributed.
 
   All previous links are cleared first.
