@@ -53,7 +53,7 @@ std::vector<double> Network::sorted_values() const {
 		
 		for (size_t i(0); i<_sorted.size(); ++i) {
 			for (size_t j(i); j<_sorted.size(); ++j) {
-				if (i<j) {k=_sorted[i];
+				if (_sorted[i]<_sorted[j]) {k=_sorted[i];
 					_sorted[i]=_sorted[j];
 					_sorted[j]=k;}
 				}
