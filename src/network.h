@@ -21,7 +21,7 @@ public:
   @param[in] a,b the indexes if the two nodes 
   @param[out] success the link was succesfully inserted (true if both nodes exist and the link did not exist yet)
  */
-    bool add_link(const size_t&, const size_t&); /**/
+    bool add_link(const size_t&, const size_t&); /*DONE*/
 /*! Creates random connections between nodes: each node *n* will be linked with *degree(n)* other nodes (randomly chosen),
  where *degree(n)* is Poisson-distributed.
   All previous links are erased first.
@@ -36,13 +36,13 @@ public:
 /*! Number of nodes */
     size_t size() const; /*DONE*/
 /*! Degree (number of links) of node no *n* */
-    size_t degree(const size_t &_n) const;
+    size_t degree(const size_t &_n) const; /*Exception to manage*/
 /*! Value of node no *n* */
     double value(const size_t &_n) const; /*Exception to manage*/
 /*! All node values in descending order */
     std::vector<double> sorted_values() const; /*DONE*/
 /*! All neighbors (linked) nodes of node no *n* */
-    std::vector<size_t> neighbors(const size_t&) const;
+    std::vector<size_t> neighbors(const size_t&) const; /*Exception to manage*/
 
 private:
     std::vector<double> values;
