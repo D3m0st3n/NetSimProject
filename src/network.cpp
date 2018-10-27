@@ -15,12 +15,18 @@ void Network::resize (const size_t& count) { /*See how to manage default value f
 
 bool Network::add_link (const size_t& _i, const size_t& _j) {
 	if (not(values.empty())) {
-		if (_i<values.size() and _j<values.size()) {
-			links.insert({_i,_j});
-			links.insert({_j,_i});
-			return true;
+		for (auto it=links.begin() ; it!=links.end(); ++it) {
+			
+			if ((_i!=it->first and _j!=it->second) or (_j!=it->first and _i!=it->second)) {
+				if (_i<values.size() and _j<values.size()) {
+					links.insert({_i,_j});
+					links.insert({_j,_i});
+					return true;
+					}
+				}
+			
 			}
-		else return false;
+		return false;
 		}
 	else return false;
 	}
@@ -61,7 +67,7 @@ std::vector<double> Network::sorted_values() const {
 		return _sorted;
 		}
 		
-	else return _sorted;
+	else return _sorted; 
 	}
 
 std::vector<size_t> Network::neighbors(const size_t&) const {}
