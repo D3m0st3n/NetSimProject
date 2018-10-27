@@ -15,18 +15,26 @@ void Network::resize (const size_t& count) { /*See how to manage default value f
 
 bool Network::add_link (const size_t& _i, const size_t& _j) {
 	if (not(values.empty())) {
-		for (auto it=links.begin() ; it!=links.end(); ++it) {
-			
-			if ((_i!=it->first and _j!=it->second) or (_j!=it->first and _i!=it->second)) {
-				if (_i<values.size() and _j<values.size()) {
-					links.insert({_i,_j});
-					links.insert({_j,_i});
-					return true;
-					}
-				}
-			
+		
+		auto search_i(links.equal_range(_i));
+		auto search_j(links.equal_range(_j));
+		
+		for (auto i=search_i.first; i!=search_i.second; ++i) {
+			for (auto j=search_j.first; j!=search_j.second; ++j ) {
+				 if (i->first==j->second or j->first==i->second) {
+					 return false;
+					 }
+				} 
 			}
-		return false;
+		
+		
+		
+		if (_i<values.size() and _j<values.size()) {
+			links.insert({_i,_j});
+			links.insert({_j,_i});
+			return true;
+			}
+				
 		}
 	else return false;
 	}
