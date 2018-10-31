@@ -25,7 +25,7 @@ public:
 /*! Creates random connections between nodes: each node *n* will be linked with *degree(n)* other nodes (randomly chosen),
  where *degree(n)* is Poisson-distributed.
   All previous links are erased first.
-  @param mean_deg the average of the Poisson distribution.
+  @param [in] mean_deg the average of the Poisson distribution.
   @param[out] numbers of \ref links created
  */
     size_t random_connect(const double&);

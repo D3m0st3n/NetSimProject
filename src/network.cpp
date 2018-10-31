@@ -60,24 +60,37 @@ bool Network::add_link (const size_t& _i, const size_t& _j) {
 size_t Network::random_connect(const double& _mean) {
 	links.clear();
 	RandomNumbers random;
-	
+	size_t link_r(0);
 	std::vector<int> degrees(values.size());
 	random.poisson(degrees, _mean);
 	
 	for (size_t i(0); i<degrees.size(); ++i) {
-		for (size_t d(0); d<degrees[i]; ++d) {
-			if (d>0) {
-				std::vector<int> link_to(d);
-				random.uniform_int(link_to, 0, values.size());
-				
-				for (size_t j(0) ; j<link_to.size(); ++j) {
-					this->add_link(values[i], link_to[j]);
+		if (degrees[i]>0) {
+			std::vector<int> link_to(degrees[i]);
+			random.uniform_int(link_to, 0, values.size()-1);
+			for (size_t j(0); j<link_to.size(); ++j) {
+				if (this->add_link(i, link_to[j])) {
+					++link_r;
 					}
-				
 				}
 			}
 		}
-	return links.size();	
+		/*
+		for (auto it=links.begin(); it!=links.end(); ++it) {
+			
+			
+			for (auto jt=; jt!=links.end(); ++jt) {
+				if (it==jt) {
+					std::cout<<std::endl;
+					std::cout<<"D.{"<<it->first<<";"<<it->second<<"} ";
+					}
+				}
+			
+			}
+			*/
+	return link_r; 
+	
+	//return links.size()/2;	
 	}
 
 size_t Network::set_values(const std::vector<double>& _vector) {
