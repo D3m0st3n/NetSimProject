@@ -77,7 +77,6 @@ size_t Network::random_connect(const double& _mean) {
 				}
 			}
 		}
-		
 	return links.size();	
 	}
 
