@@ -2,43 +2,55 @@
 #include "random.h"
 #include <iostream>
 
-void Network::resize (const size_t& count) { /*See how to manage default value for initializing new values*/
-	if (count>values.size()) {
-		for (size_t i(0); i<count; ++i) {
-			values.push_back(0.);
+void Network::resize (const size_t& count) {
+	RandomNumbers random; 
+	if (not values.empty()) {
+		if (count>values.size()) {
+			for (size_t i(0); i<count; ++i) {
+				values.push_back(random.normal());
+				}
+			}
+		if (count<values.size()) {
+			for (size_t i(count); i<values.size(); ++i) {
+				values.pop_back();
+				}
+			for (size_t j(0); j<values.size(); ++j) {
+				values[j]=random.normal();
+				}
 			}
 		}
-	if (count<values.size()) {
-		for (size_t i(count); i<values.size(); ++i) {
-			values.pop_back();
+	else {
+		for (size_t i(0); i<count ; ++i) {
+			values.push_back(random.normal());
 			}
-		}
+		} 
 	}
 
 bool Network::add_link (const size_t& _i, const size_t& _j) {
 	if (not(values.empty())) {
-		
-		//We create to list of elements that have _i and _j as keys
-		auto search_i(links.equal_range(_i));
-		auto search_j(links.equal_range(_j));
-		
-		//We compare every element of each list
-		for (auto i=search_i.first; i!=search_i.second; ++i) {
-			for (auto j=search_j.first; j!=search_j.second; ++j ) {
-				 if (i->first==j->second or j->first==i->second) {
-					 return false;
-					 }
-				} 
-			}
-		
-		
-		
-		if (_i<values.size() and _j<values.size()) {
-			links.insert({_i,_j});
-			links.insert({_j,_i});
-			return true;
-			}
-		
+		if (_i!=_j) {
+			//We create to list of elements that have _i and _j as keys
+			auto search_i(links.equal_range(_i));
+			auto search_j(links.equal_range(_j));
+			
+			//We compare every element of each list
+			for (auto i=search_i.first; i!=search_i.second; ++i) {
+				for (auto j=search_j.first; j!=search_j.second; ++j ) {
+					 if (i->first==j->second or j->first==i->second) {
+						 return false;
+						 }
+					} 
+				}
+			
+			
+			
+			if (_i<values.size() and _j<values.size()) {
+				links.insert({_i,_j});
+				links.insert({_j,_i});
+				return true;
+				}
+			return false;
+		}
 		else return false;
 				
 		}
@@ -46,36 +58,50 @@ bool Network::add_link (const size_t& _i, const size_t& _j) {
 	}
 
 size_t Network::random_connect(const double& _mean) {
-	size_t r_links(0);
-	std::vector<size_t> degrees;
-	for (size_t i(0); i<values.size(); ++i) {
-		degrees.push_back(this->degree(i));
-		}
 	links.clear();
 	RandomNumbers random;
 	
-	for (size_t j(0); j<values.size(); ++j) {
-		if (degrees[j]>0) {
-			for (size_t d(0); d<degrees[j]; ++d) {
+	std::vector<int> degrees(values.size());
+	random.poisson(degrees, _mean);
+	
+	for (size_t i(0); i<degrees.size(); ++i) {
+		for (size_t d(0); d<degrees[i]; ++d) {
+			if (d>0) {
+				std::vector<int> link_to(d);
+				random.uniform_int(link_to, 0, values.size());
 				
-				int i(random.poisson(_mean));
-				while (i==j and (i>values.size() or i<0)) {
-					i=random.poisson(_mean);
+				for (size_t j(0) ; j<link_to.size(); ++j) {
+					this->add_link(values[i], link_to[j]);
 					}
-				std::cout<<i<<std::endl;
-				this->add_link(j,i);
-				++r_links;
+				
 				}
 			}
 		}
-	
-	
-	return r_links;
+		
+	return links.size();	
 	}
 
 size_t Network::set_values(const std::vector<double>& _vector) {
-	values=_vector;
-	return values.size();
+	if (not values.empty()) {
+		size_t R(0);
+		if (_vector.size()>values.size()) {
+			for (size_t i(0); i<values.size(); ++i) {
+				values[i]=_vector[i];
+				++R;
+				}
+			}
+		else {
+			for (size_t i(0); i<_vector.size(); ++i) {
+				values[i]=_vector[i];
+				++R;
+				}
+			}
+		return R;
+		}
+	else {
+		values=_vector;
+		return values.size();
+		}
 	}
 
 size_t Network::size() const { return values.size();}
@@ -103,7 +129,8 @@ double Network::value(const size_t& _n) const {
 			if (i==_n) { return values[i];}
 			}
 		}
-	/*How to manage empty vectors???*/
+	std::cerr<<"No existing nodes"<<std::endl;
+	return 0;
 	}
 
 std::vector<double> Network::sorted_values() const {
@@ -126,7 +153,6 @@ std::vector<double> Network::sorted_values() const {
 	}
 
 std::vector<size_t> Network::neighbors(const size_t& _n) const {
-	
 	if (not values.empty()) {
 		if (_n<values.size()) {
 			std::vector<size_t> neighbors;
