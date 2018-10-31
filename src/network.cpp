@@ -75,22 +75,7 @@ size_t Network::random_connect(const double& _mean) {
 				}
 			}
 		}
-		/*
-		for (auto it=links.begin(); it!=links.end(); ++it) {
-			
-			
-			for (auto jt=; jt!=links.end(); ++jt) {
-				if (it==jt) {
-					std::cout<<std::endl;
-					std::cout<<"D.{"<<it->first<<";"<<it->second<<"} ";
-					}
-				}
-			
-			}
-			*/
 	return link_r; 
-	
-	//return links.size()/2;	
 	}
 
 size_t Network::set_values(const std::vector<double>& _vector) {
