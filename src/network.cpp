@@ -60,7 +60,7 @@ bool Network::add_link (const size_t& _i, const size_t& _j) {
 size_t Network::random_connect(const double& _mean) {
 	links.clear();
 	RandomNumbers random;
-	size_t link_r(0);
+	size_t link_r(0); //number of newly created links
 	std::vector<int> degrees(values.size());
 	random.poisson(degrees, _mean);
 	
@@ -127,7 +127,7 @@ double Network::value(const size_t& _n) const {
 			}
 		}
 	std::cerr<<"No existing nodes"<<std::endl;
-	return 0;
+	//return 0;
 	}
 
 std::vector<double> Network::sorted_values() const {
