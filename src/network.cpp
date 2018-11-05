@@ -127,7 +127,6 @@ double Network::value(const size_t& _n) const {
 			}
 		}
 	std::cerr<<"No existing nodes"<<std::endl;
-	//return 0;
 	}
 
 std::vector<double> Network::sorted_values() const {
